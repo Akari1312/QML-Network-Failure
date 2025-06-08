@@ -1,4 +1,4 @@
-# enhanced_main_app.py - FIXED with Enterprise Quantum Security AI
+# enhanced_main_app.py - COMPLETE ENHANCED VERSION with Real-Time Packet Monitoring
 import threading
 import time
 import sys
@@ -8,18 +8,18 @@ import os
 from datetime import datetime
 from flask import Flask, request, jsonify
 
-# Import our Enterprise components - FIXED
+# Import our Enhanced Packet-Based Quantum components
 try:
-    from quantum_analyzer import EnterpriseQuantumSecurityAI as QuantumNetworkAnalyzer
+    from quantum_analyzer import EnhancedPacketQuantumSecurityAI as QuantumNetworkAnalyzer
     from attack_simulator import NetworkAttackSimulator
     from quantum_server import QuantumNetworkMonitorServer
     from quantum_client import QuantumNetworkClient
-    ENTERPRISE_IMPORTS = True
-    print("✅ Enterprise Quantum Security AI components loaded successfully!")
+    QUANTUM_IMPORTS = True
+    print("✅ Enhanced Packet Quantum Security AI components loaded successfully!")
 except ImportError as e:
     print(f"❌ Critical import error: {e}")
     print("💡 Please ensure all modules are in the same directory")
-    ENTERPRISE_IMPORTS = False
+    QUANTUM_IMPORTS = False
     sys.exit(1)
 
 class SimpleMinineController:
@@ -85,7 +85,7 @@ class SimpleMinineController:
             subprocess.run(['sudo', 'tc', 'qdisc', 'del', 'dev', self.wsl_interface, 'root'], 
                          check=False, capture_output=True)
             
-            if attack_type == 'dos':
+            if attack_type == 'dos' or attack_type == 'ddos':
                 print(f"🚨 Applying DoS conditions to {self.wsl_interface}...")
                 subprocess.run([
                     'sudo', 'tc', 'qdisc', 'add', 'dev', self.wsl_interface, 'root', 
@@ -173,11 +173,11 @@ class SimpleMinineController:
         except Exception as e:
             print(f"⚠️  WSL cleanup warning: {e}")
 
-class EnterpriseQuantumNetworkMonitor:
+class EnhancedPacketQuantumNetworkMonitor:
     def __init__(self):
-        print("🏢 Initializing Enterprise Quantum Network Security System...")
+        print("📦 Initializing Enhanced Packet Quantum Network Security System...")
         
-        # Initialize Enterprise Quantum Security AI
+        # Initialize Enhanced Packet Quantum Security AI
         self.quantum_analyzer = QuantumNetworkAnalyzer()
         self.server = QuantumNetworkMonitorServer(self.quantum_analyzer)
         
@@ -194,14 +194,14 @@ class EnterpriseQuantumNetworkMonitor:
         self.app = Flask(__name__)
         self.setup_routes()
         
-        print("✅ Enterprise Quantum Network Security System initialized")
+        print("✅ Enhanced Packet Quantum Network Security System initialized")
         
     def setup_routes(self):
-        """Setup Flask routes with Enterprise Quantum Security features"""
+        """Setup Flask routes with Enhanced Packet Quantum Security features"""
         
         @self.app.route('/')
         def quantum_dashboard():
-            return self.render_enterprise_dashboard()
+            return self.render_enhanced_packet_dashboard()
         
         @self.app.route('/update', methods=['POST'])
         def receive_update():
@@ -227,29 +227,29 @@ class EnterpriseQuantumNetworkMonitor:
             self.server.log_event("CLIENT_MANUALLY_STOPPED", "Client manually stopped")
             return '<script>window.location.href="/"</script>'
         
-        # Enterprise attack simulation routes
+        # Enhanced packet-based attack simulation routes
         @self.app.route('/simulate_dos')
         def simulate_dos():
-            self.enhanced_attack_simulation('dos')
-            self.server.log_event("ENTERPRISE_DOS_SIMULATION", "Enterprise DoS attack simulation initiated")
+            self.enhanced_attack_simulation('ddos')  # DDoS Volumetric
+            self.server.log_event("ENHANCED_DDOS_SIMULATION", "Enhanced DDoS volumetric attack simulation initiated")
             return '<script>window.location.href="/"</script>'
         
         @self.app.route('/simulate_flooding')
         def simulate_flooding():
-            self.enhanced_attack_simulation('flooding')
-            self.server.log_event("ENTERPRISE_FLOODING_SIMULATION", "Enterprise flooding simulation initiated")
+            self.enhanced_attack_simulation('flooding')  # Port Scan
+            self.server.log_event("ENHANCED_PORTSCAN_SIMULATION", "Enhanced port scan attack simulation initiated")
             return '<script>window.location.href="/"</script>'
         
         @self.app.route('/simulate_congestion')
         def simulate_congestion():
-            self.enhanced_attack_simulation('congestion')
-            self.server.log_event("ENTERPRISE_CONGESTION_SIMULATION", "Enterprise congestion simulation initiated")
+            self.enhanced_attack_simulation('congestion')  # Data Exfiltration
+            self.server.log_event("ENHANCED_EXFILTRATION_SIMULATION", "Enhanced data exfiltration simulation initiated")
             return '<script>window.location.href="/"</script>'
         
         @self.app.route('/stop_attack')
         def stop_attack():
             self.enhanced_stop_attack()
-            self.server.log_event("ENTERPRISE_ATTACK_STOPPED", "Enterprise attack simulation stopped")
+            self.server.log_event("ENHANCED_ATTACK_STOPPED", "Enhanced attack simulation stopped")
             return '<script>window.location.href="/"</script>'
         
         # Mininet control routes
@@ -275,25 +275,29 @@ class EnterpriseQuantumNetworkMonitor:
             self.server.log_event("MANUAL_STATE_SAVE", "State manually saved via web interface")
             return '<script>window.location.href="/"</script>'
         
-        # Enterprise reporting route
-        @self.app.route('/enterprise_report')
-        def enterprise_report():
+        # Enhanced packet analytics route
+        @self.app.route('/packet_analytics')
+        def packet_analytics():
             try:
                 analytics = self.quantum_analyzer.get_enterprise_analytics()
                 return jsonify(analytics)
             except:
-                return jsonify({'error': 'Enterprise analytics not available'})
+                return jsonify({'error': 'Enhanced packet analytics not available'})
     
     def enhanced_attack_simulation(self, attack_type):
-        """Enhanced attack simulation using both Mininet and application-level attacks"""
-        print(f"🏢 Enterprise {attack_type} attack: Network + Application + AI level")
+        """Enhanced attack simulation using distinctive packet patterns"""
+        print(f"📦 Enhanced {attack_type} attack: Network + Application + Packet level")
+        
+        # Set enhanced packet simulation mode
+        if hasattr(self.quantum_analyzer, 'set_attack_mode'):
+            self.quantum_analyzer.set_attack_mode(attack_type)
         
         # Apply Mininet network conditions if enabled
         if self.mininet_enabled:
             self.mininet_controller.apply_network_attack(attack_type)
         
         # Apply application-level attack simulation
-        if attack_type == 'dos':
+        if attack_type == 'dos' or attack_type == 'ddos':
             self.attack_simulator.start_dos_attack()
         elif attack_type == 'flooding':
             self.attack_simulator.start_flooding_attack()
@@ -301,8 +305,12 @@ class EnterpriseQuantumNetworkMonitor:
             self.attack_simulator.start_congestion_attack()
     
     def enhanced_stop_attack(self):
-        """Stop both Mininet and application-level attacks"""
-        print("✅ Stopping enterprise attacks...")
+        """Stop enhanced packet-based, Mininet and application-level attacks"""
+        print("✅ Stopping all enhanced attack simulations...")
+        
+        # Stop enhanced packet simulation
+        if hasattr(self.quantum_analyzer, 'set_attack_mode'):
+            self.quantum_analyzer.set_attack_mode(None)
         
         # Stop application-level attacks
         self.attack_simulator.stop_attack()
@@ -357,16 +365,16 @@ class EnterpriseQuantumNetworkMonitor:
             return False
     
     def get_enhanced_status(self):
-        """Get enhanced status including Enterprise Quantum Security metrics"""
+        """Get enhanced status including Enhanced Packet Quantum Security metrics"""
         # Get base quantum status
         status_data = self.server.get_status()
         
-        # Add Enterprise metrics
+        # Add Enhanced Packet analytics
         try:
-            enterprise_analytics = self.quantum_analyzer.get_enterprise_analytics()
-            status_data['enterprise_analytics'] = enterprise_analytics
+            packet_analytics = self.quantum_analyzer.get_enterprise_analytics()
+            status_data['packet_analytics'] = packet_analytics
         except:
-            status_data['enterprise_analytics'] = {}
+            status_data['packet_analytics'] = {}
         
         # Add Mininet statistics if enabled
         if self.mininet_enabled:
@@ -378,8 +386,8 @@ class EnterpriseQuantumNetworkMonitor:
         
         return status_data
     
-    def render_enterprise_dashboard(self):
-        """Render Enterprise Quantum Security dashboard"""
+    def render_enhanced_packet_dashboard(self):
+        """Render Enhanced Packet Quantum Security dashboard with real-time monitoring"""
         status_data = self.get_enhanced_status()
         
         current_data = status_data['current_data']
@@ -388,7 +396,38 @@ class EnterpriseQuantumNetworkMonitor:
         snapshots = status_data['saved_snapshots']
         mininet_enabled = status_data.get('mininet_enabled', False)
         mininet_stats = status_data.get('mininet_stats', {})
-        enterprise_analytics = status_data.get('enterprise_analytics', {})
+        
+        # Get enhanced packet analytics
+        try:
+            packet_analytics = status_data.get('packet_analytics', {})
+            model_info = packet_analytics.get('model_info', {})
+            real_time_metrics = packet_analytics.get('real_time_metrics', {})
+            
+            # Extract real-time stats
+            total_packets = real_time_metrics.get('total_packets', 0)
+            packets_per_second = real_time_metrics.get('packets_per_second', 0)
+            unique_ips = real_time_metrics.get('unique_src_ips', 0)
+            unique_ports = real_time_metrics.get('unique_dst_ports', 0)
+            avg_packet_size = real_time_metrics.get('avg_packet_size', 0)
+            protocol_dist = real_time_metrics.get('protocol_distribution', {})
+            attack_mode = real_time_metrics.get('attack_mode', 'normal')
+            monitoring_duration = real_time_metrics.get('monitoring_duration', 0)
+            
+            model_accuracy = model_info.get('model_accuracy', 0) * 100
+            model_architecture = model_info.get('architecture', 'Unknown')
+            
+        except:
+            # Fallback values
+            total_packets = 0
+            packets_per_second = 0
+            unique_ips = 0
+            unique_ports = 0
+            avg_packet_size = 0
+            protocol_dist = {}
+            attack_mode = 'normal'
+            monitoring_duration = 0
+            model_accuracy = 0
+            model_architecture = 'Unknown'
         
         status = status_data['status']
         status_icon = "🟢" if status == "connected" else "🔴"
@@ -405,19 +444,17 @@ class EnterpriseQuantumNetworkMonitor:
         attack_status = "🚨 ACTIVE" if self.attack_simulator.attack_active else "✅ NONE"
         mininet_status = "🌐 ACTIVE" if mininet_enabled else "❌ DISABLED"
         
-        # Get enterprise model info
-        model_info = enterprise_analytics.get('model_info', {})
-        model_accuracy = model_info.get('model_accuracy', 0) * 100
-        model_architecture = model_info.get('architecture', 'Unknown')
-        
         # Recent quantum analysis
         latest_quantum = quantum_analysis[0] if quantum_analysis else None
+        
+        # Protocol distribution display
+        protocol_display = ", ".join([f"{k}: {v}" for k, v in protocol_dist.items()]) if protocol_dist else "No protocols detected"
         
         html = f"""
         <!DOCTYPE html>
         <html>
         <head>
-            <title>🏢 Enterprise Quantum Security AI</title>
+            <title>📦 Enhanced Packet Quantum Security AI</title>
             <style>
                 body {{
                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -613,12 +650,27 @@ class EnterpriseQuantumNetworkMonitor:
                 .score-low {{ background: linear-gradient(135deg, #28a745, #20c997); }}
                 .score-medium {{ background: linear-gradient(135deg, #ffc107, #e0a800); color: #212529; }}
                 .score-high {{ background: linear-gradient(135deg, #dc3545, #c82333); }}
+                .real-time-box {{
+                    background: linear-gradient(135deg, #e8f5e8, #d4edda);
+                    border: 2px solid #28a745;
+                    border-radius: 15px;
+                    padding: 20px;
+                    margin: 25px 0;
+                }}
+                .attack-mode-box {{
+                    background: linear-gradient(135deg, {'#ffeaa7' if attack_mode == 'normal' else '#ff7675'}, {'#fdcb6e' if attack_mode == 'normal' else '#e84393'});
+                    border: 2px solid {'#fdcb6e' if attack_mode == 'normal' else '#e84393'};
+                    border-radius: 15px;
+                    padding: 20px;
+                    margin: 25px 0;
+                    color: {'#2d3436' if attack_mode == 'normal' else 'white'};
+                }}
             </style>
             <script>
                 function autoRefresh() {{
                     setTimeout(function(){{
                         window.location.reload();
-                    }}, 4000);
+                    }}, 2000);  // Refresh every 2 seconds for real-time feel
                 }}
                 window.onload = autoRefresh;
             </script>
@@ -626,27 +678,71 @@ class EnterpriseQuantumNetworkMonitor:
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🏢 Enterprise Quantum Security AI</h1>
-                    <div class="enterprise-badge">Production-Ready Quantum ML Security Intelligence</div>
+                    <h1>📦 Enhanced Packet Quantum Security AI</h1>
+                    <div class="enterprise-badge">Real-Time Network Packet Analysis with Quantum ML</div>
                     <p style="margin: 15px 0 0 0; color: #6c757d;">
-                        Advanced Threat Detection • Quantum Neural Networks • Real-time Analytics
+                        Live Packet Monitoring • Quantum Neural Networks • Advanced Threat Detection
+                    </p>
+                </div>
+                
+                <div class="real-time-box">
+                    <h3 style="color: #1e3c72; margin-bottom: 20px;">📈 Real-Time Packet Monitoring</h3>
+                    <div class="metric-grid">
+                        <div class="metric-item">
+                            <div class="metric-value" style="color: {'#dc3545' if packets_per_second > 100 else '#28a745'};">{packets_per_second}</div>
+                            <div class="metric-label">Packets/Second</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">{total_packets:,}</div>
+                            <div class="metric-label">Total Packets</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value" style="color: {'#dc3545' if unique_ips > 50 else '#28a745'};">{unique_ips}</div>
+                            <div class="metric-label">Unique Source IPs</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value" style="color: {'#dc3545' if unique_ports > 100 else '#28a745'};">{unique_ports}</div>
+                            <div class="metric-label">Unique Dest Ports</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">{avg_packet_size} B</div>
+                            <div class="metric-label">Avg Packet Size</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">{monitoring_duration:.1f}s</div>
+                            <div class="metric-label">Monitoring Duration</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 8px;">
+                        <strong>Protocol Distribution:</strong> {protocol_display}
+                    </div>
+                </div>
+                
+                <div class="attack-mode-box">
+                    <h3 style="margin-bottom: 15px;">🎯 Current Attack Simulation Mode</h3>
+                    <div style="font-size: 1.5em; font-weight: bold;">
+                        {attack_mode.replace('_', ' ').title()}
+                        {'🟢 Normal Operations' if attack_mode == 'normal' else '🚨 Attack Simulation Active'}
+                    </div>
+                    <p style="margin-top: 10px; opacity: 0.9;">
+                        {'System is monitoring normal business traffic patterns.' if attack_mode == 'normal' else f'Simulating {attack_mode.replace("_", " ")} attack patterns for quantum AI detection testing.'}
                     </p>
                 </div>
                 
                 <div class="enterprise-metrics">
-                    <h3 style="color: #1e3c72; margin-bottom: 20px;">🔬 Enterprise Quantum Security Metrics</h3>
+                    <h3 style="color: #1e3c72; margin-bottom: 20px;">📦 Quantum Security AI Performance</h3>
                     <div class="metric-grid">
                         <div class="metric-item">
                             <div class="metric-value">{model_accuracy:.1f}%</div>
                             <div class="metric-label">Model Accuracy</div>
                         </div>
                         <div class="metric-item">
-                            <div class="metric-value">{model_architecture}</div>
+                            <div class="metric-value">4-Qubit</div>
                             <div class="metric-label">Quantum Architecture</div>
                         </div>
                         <div class="metric-item">
-                            <div class="metric-value">{len(self.quantum_analyzer.timing_history)}</div>
-                            <div class="metric-label">Analysis Samples</div>
+                            <div class="metric-value">{len(self.quantum_analyzer.packet_history)}</div>
+                            <div class="metric-label">Packet History</div>
                         </div>
                         <div class="metric-item">
                             <div class="metric-value">{'✅' if self.quantum_analyzer.quantum_available else '❌'}</div>
@@ -666,7 +762,7 @@ class EnterpriseQuantumNetworkMonitor:
                         🚨 Attack Status<br>{attack_status}
                     </div>
                     <div class="status-card card-enterprise">
-                        🔬 Quantum AI<br>{'✅ OPERATIONAL' if self.quantum_analyzer.quantum_available else '❌ OFFLINE'}
+                        📦 Packet AI<br>{'✅ OPERATIONAL' if self.quantum_analyzer.quantum_available else '❌ OFFLINE'}
                     </div>
                     <div class="status-card card-{'blue' if mininet_enabled else 'red'}">
                         🌐 Network Sim<br>{mininet_status}
@@ -674,7 +770,7 @@ class EnterpriseQuantumNetworkMonitor:
                 </div>
                 
                 <div class="control-panel">
-                    <h3 style="color: #1e3c72;">🎮 Enterprise Security Control Center</h3>
+                    <h3 style="color: #1e3c72;">📦 Enhanced Packet Security Control Center</h3>
                     
                     <div class="control-section">
                         <h4>Client Operations</h4>
@@ -689,10 +785,10 @@ class EnterpriseQuantumNetworkMonitor:
                     </div>
                     
                     <div class="control-section">
-                        <h4>Threat Simulation</h4>
-                        <a href="/simulate_dos" class="btn btn-warning">💥 DDoS Attack</a>
-                        <a href="/simulate_flooding" class="btn btn-warning">🌊 Flood Attack</a>
-                        <a href="/simulate_congestion" class="btn btn-warning">🚦 Congestion</a>
+                        <h4>Enhanced Packet Attack Simulation</h4>
+                        <a href="/simulate_dos" class="btn btn-warning">💥 DDoS Volumetric</a>
+                        <a href="/simulate_flooding" class="btn btn-warning">🌊 Port Scan</a>
+                        <a href="/simulate_congestion" class="btn btn-warning">🚦 Data Exfiltration</a>
                         <a href="/stop_attack" class="btn btn-success">✅ Stop All</a>
                     </div>
                     
@@ -700,7 +796,7 @@ class EnterpriseQuantumNetworkMonitor:
                         <h4>System Operations</h4>
                         <a href="/" class="btn">🔄 Refresh</a>
                         <a href="/force_save_state" class="btn btn-danger">💾 Save State</a>
-                        <a href="/enterprise_report" class="btn btn-info" target="_blank">📊 Analytics</a>
+                        <a href="/packet_analytics" class="btn btn-info" target="_blank">📦 Packet Analytics</a>
                     </div>
                 </div>"""
 
@@ -730,7 +826,7 @@ class EnterpriseQuantumNetworkMonitor:
                 </div>
             """
 
-        # Add quantum analysis summary
+        # Add enhanced packet analysis summary
         if latest_quantum:
             try:
                 # Handle different database column counts safely
@@ -747,10 +843,10 @@ class EnterpriseQuantumNetworkMonitor:
                 
                 html += f"""
                     <div style="background: linear-gradient(135deg, #e7f3ff, #cce7ff); border: 2px solid #b3d7ff; border-radius: 15px; padding: 20px; margin: 25px 0;">
-                        <h4 style="color: #1e3c72;">🔬 Latest Quantum Security Analysis</h4>
+                        <h4 style="color: #1e3c72;">📦 Latest Enhanced Packet Security Analysis</h4>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
                             <div style="background: white; padding: 15px; border-radius: 10px;">
-                                <strong>Threat Pattern:</strong><br>
+                                <strong>Packet Pattern:</strong><br>
                                 <span style="color: #1e3c72; font-size: 1.2em;">{pattern_type.replace('_', ' ').title()}</span>
                             </div>
                             <div style="background: white; padding: 15px; border-radius: 10px;">
@@ -765,7 +861,7 @@ class EnterpriseQuantumNetworkMonitor:
                             </div>
                         </div>
                         <div style="margin-top: 15px;">
-                            <strong>Detection Scores:</strong>
+                            <strong>Enhanced Detection Scores:</strong>
                             <span class="quantum-score score-{'high' if quantum_score > 0.7 else ('medium' if quantum_score > 0.4 else 'low')}">
                                 Quantum: {quantum_score:.3f}
                             </span>
@@ -778,7 +874,7 @@ class EnterpriseQuantumNetworkMonitor:
             except Exception as e:
                 html += f"""
                     <div style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 15px; padding: 20px; margin: 25px 0; color: #721c24;">
-                        <h4>⚠️ Quantum Analysis Display Error</h4>
+                        <h4>⚠️ Packet Analysis Display Error</h4>
                         <p>Error parsing quantum data: {str(e)}</p>
                     </div>
                 """
@@ -816,12 +912,12 @@ class EnterpriseQuantumNetworkMonitor:
                     </tbody>
                 </table>
                 
-                <h2 class="section-title">🔬 Quantum Security Analysis History</h2>
+                <h2 class="section-title">📦 Enhanced Packet Security Analysis History</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>Analysis Time</th>
-                            <th>Threat Pattern</th>
+                            <th>Packet Pattern</th>
                             <th>Quantum Score</th>
                             <th>Classical Score</th>
                             <th>Confidence</th>
@@ -874,8 +970,8 @@ class EnterpriseQuantumNetworkMonitor:
             html += """
                         <tr>
                             <td colspan="6" style="text-align: center; color: #6c757d; padding: 30px;">
-                                <div style="font-size: 1.2em;">🔬 No quantum analysis data yet</div>
-                                <div style="margin-top: 10px;">Start the client monitor to begin enterprise security analysis</div>
+                                <div style="font-size: 1.2em;">📦 No enhanced packet analysis data yet</div>
+                                <div style="margin-top: 10px;">Start the client monitor to begin packet security analysis</div>
                             </td>
                         </tr>
             """
@@ -885,48 +981,56 @@ class EnterpriseQuantumNetworkMonitor:
                 </table>
                 
                 <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); border: 2px solid #ffc107; border-radius: 15px; padding: 25px; margin: 30px 0;">
-                    <h4 style="color: #856404;">💡 Enterprise Quantum Security AI - Demo Guide</h4>
+                    <h4 style="color: #856404;">💡 Enhanced Packet-Based Quantum Security AI - Demo Guide</h4>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px;">
                         <div>
-                            <strong>🔬 Quantum Features:</strong>
+                            <strong>📦 Enhanced Packet Features:</strong>
                             <ul style="margin: 10px 0;">
-                                <li>12-qubit quantum neural network</li>
-                                <li>480+ enterprise training scenarios</li>
-                                <li>Real-time threat classification</li>
-                                <li>Advanced quantum entanglement</li>
+                                <li>4-qubit quantum neural network</li>
+                                <li>10 distinctive packet-level features</li>
+                                <li>Real-time packet flow monitoring</li>
+                                <li>Multi-protocol threat detection</li>
+                                <li>Live packet rate and size analysis</li>
                             </ul>
                         </div>
                         <div>
-                            <strong>🎯 Testing Workflow:</strong>
+                            <strong>🎯 Enhanced Testing Workflow:</strong>
                             <ol style="margin: 10px 0;">
                                 <li>Start Client Monitor</li>
-                                <li>Observe normal operations</li>
-                                <li>Trigger threat simulations</li>
-                                <li>Watch quantum AI detection</li>
+                                <li>Observe normal packet patterns</li>
+                                <li>Trigger enhanced packet-based attacks</li>
+                                <li>Watch quantum AI detection in real-time</li>
+                                <li>Monitor live packet statistics</li>
                             </ol>
                         </div>
                         <div>
-                            <strong>🏆 Enterprise Capabilities:</strong>
+                            <strong>🏆 Enhanced Packet Capabilities:</strong>
                             <ul style="margin: 10px 0;">
-                                <li>DDoS/APT/Zero-day detection</li>
-                                <li>Network + Application analysis</li>
-                                <li>Production-ready architecture</li>
-                                <li>Real-time security intelligence</li>
+                                <li>DDoS volumetric flood detection</li>
+                                <li>Port scan reconnaissance alerts</li>
+                                <li>Data exfiltration identification</li>
+                                <li>Botnet C&C communication detection</li>
+                                <li>Real-time network analytics</li>
                             </ul>
                         </div>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 10px;">
+                        <strong>🚀 Real-Time Features:</strong> Live packet counting, protocol distribution, source IP diversity, 
+                        destination port analysis, packet size monitoring, and attack pattern simulation with distinctive signatures.
                     </div>
                 </div>
                 
                 <div style="text-align: center; color: #6c757d; margin-top: 40px; padding-top: 25px; border-top: 2px solid #e9ecef;">
                     <div style="font-size: 1.1em; margin-bottom: 10px;">
-                        🔄 Auto-refresh every 4s | 🕐 {datetime.now().strftime('%H:%M:%S')} | 📅 {datetime.now().strftime('%Y-%m-%d')}
+                        🔄 Auto-refresh every 2s | 🕐 {datetime.now().strftime('%H:%M:%S')} | 📅 {datetime.now().strftime('%Y-%m-%d')}
                     </div>
                     <div style="font-size: 0.9em;">
-                        🏢 Enterprise Quantum Security AI v3.0 | 
+                        📦 Enhanced Packet-Based Quantum Security AI v2.0 | 
                         🔬 Quantum: {'Active' if self.quantum_analyzer.quantum_available else 'Disabled'} | 
                         🌐 Mininet: {'Active' if mininet_enabled else 'Disabled'} | 
                         💻 WSL Platform | 
-                        🎓 Academic Demo Ready
+                        🎓 Academic Demo Ready | 
+                        📈 Real-Time Monitoring: {total_packets:,} packets analyzed
                     </div>
                 </div>
             </div>
@@ -941,7 +1045,7 @@ class EnterpriseQuantumNetworkMonitor:
         host = '0.0.0.0'
         port = 5000
         
-        print(f"🌐 Starting Enterprise Quantum Security Server on {host}:{port}")
+        print(f"🌐 Starting Enhanced Packet-Based Quantum Security Server on {host}:{port}")
         print(f"💻 Access from Windows: http://localhost:{port}")
         print(f"🐧 Access from WSL: http://127.0.0.1:{port}")
         
@@ -954,16 +1058,19 @@ class EnterpriseQuantumNetworkMonitor:
         self.client.run_loop()
     
     def start(self):
-        """Start the Enterprise Quantum Network Security System"""
-        print("🏢 ENTERPRISE QUANTUM NETWORK SECURITY AI")
+        """Start the Enhanced Packet-Based Quantum Network Security System"""
+        print("📦 ENHANCED PACKET-BASED QUANTUM NETWORK SECURITY AI")
         print("=" * 80)
         print("🌐 Dashboard: http://localhost:5000")
-        print("🔬 Quantum ML: 12-qubit Enterprise Security Neural Network")
+        print("📦 Enhanced Packet Analysis: 10-feature Quantum Neural Network")
+        print("📈 Real-Time Monitoring: Live packet rates, protocols, IPs, ports")
         print("🌐 Network Simulation: Mininet + Advanced Traffic Control")
-        print("🚨 Threat Detection: DDoS, APT, Zero-day, Botnet, Insider")
-        print("💾 Intelligence: Real-time Quantum Security Analytics")
-        print("🎓 Academic Demo: Production-Ready Enterprise System")
+        print("🚨 Threat Detection: DDoS, Port Scans, Data Exfiltration, Botnet C&C")
+        print("💾 Intelligence: Real-time Packet Flow Analytics with Attack Signatures")
+        print("🎓 Academic Demo: Production-Ready Enhanced Packet Analysis System")
         print("💻 Platform: WSL Linux with Full Network Capabilities")
+        print("🔬 Quantum ML: 4-qubit neural network with enhanced entanglement")
+        print("📊 Live Stats: Packets/sec, unique IPs, port diversity, protocol distribution")
         print("=" * 80)
         
         # Start server in background thread
@@ -981,12 +1088,16 @@ class EnterpriseQuantumNetworkMonitor:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("\n🛑 Enterprise Quantum Security System stopped")
+            print("\n📦 Enhanced Packet-Based Quantum Security System stopped")
             self.cleanup()
     
     def cleanup(self):
-        """Clean up all Enterprise components"""
-        print("🧹 Cleaning up Enterprise Quantum Security System...")
+        """Clean up all Enhanced Packet-Based components"""
+        print("🧹 Cleaning up Enhanced Packet-Based Quantum Security System...")
+        
+        # Stop enhanced packet simulation
+        if hasattr(self.quantum_analyzer, 'packet_simulator_active'):
+            self.quantum_analyzer.packet_simulator_active = False
         
         # Stop Mininet if running
         if self.mininet_enabled:
@@ -995,7 +1106,7 @@ class EnterpriseQuantumNetworkMonitor:
         # Stop other components
         self.client.stop()
         
-        print("✅ Enterprise cleanup complete")
+        print("✅ Enhanced packet-based cleanup complete")
 
 def check_root_permissions():
     """Check if running with appropriate permissions for WSL"""
@@ -1007,7 +1118,7 @@ def check_root_permissions():
         return False
 
 if __name__ == '__main__':
-    print("🏢 ENTERPRISE QUANTUM NETWORK SECURITY AI - PRODUCTION SYSTEM")
+    print("📦 ENHANCED PACKET-BASED QUANTUM NETWORK SECURITY AI - PRODUCTION SYSTEM")
     print("🐧 Running in WSL (Windows Subsystem for Linux)")
     
     # Check permissions
@@ -1024,6 +1135,6 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             sys.exit(1)
     
-    # Initialize and start Enterprise Quantum Security System
-    monitor = EnterpriseQuantumNetworkMonitor()
+    # Initialize and start Enhanced Packet-Based Quantum Security System
+    monitor = EnhancedPacketQuantumNetworkMonitor()
     monitor.start()
