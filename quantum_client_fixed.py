@@ -1,4 +1,4 @@
-# quantum_client.py - Enhanced Client with Attack Simulation (FIXED)
+# quantum_client_fixed.py - Fixed Enhanced Client
 import requests
 import random
 import time
@@ -29,7 +29,7 @@ class QuantumNetworkClient:
         return data
     
     def send_update(self):
-        """Send update to server"""
+        """Send update to server with error handling"""
         try:
             data = self.generate_random_data()
             
@@ -79,7 +79,10 @@ class QuantumNetworkClient:
         if self.running:
             self.running = False
             if self.attack_simulator:
-                self.attack_simulator.stop_attack()
+                try:
+                    self.attack_simulator.stop_attack()
+                except:
+                    pass
             print("🛑 [CLIENT] Stopped")
         else:
             print("⚠️  [CLIENT] Already stopped")
@@ -95,8 +98,8 @@ class QuantumNetworkClient:
             'failed_attempts': self.failed_attempts,
             'server_url': self.server_url,
             'update_interval': self.update_interval,
-            'attack_active': self.attack_simulator.attack_active if self.attack_simulator else False,
-            'attack_type': self.attack_simulator.attack_type if self.attack_simulator else None
+            'attack_active': getattr(self.attack_simulator, 'attack_active', False) if self.attack_simulator else False,
+            'attack_type': getattr(self.attack_simulator, 'attack_type', None) if self.attack_simulator else None
         }
     
     def run_loop(self):
@@ -104,22 +107,27 @@ class QuantumNetworkClient:
         print("🔄 [CLIENT] Starting update loop...")
         
         while self.running:
-            # Check if we should continue running
-            if self.failed_attempts >= self.max_failed_attempts:
-                print(f"❌ [CLIENT] Too many failed attempts ({self.failed_attempts}), stopping...")
-                self.running = False
-                break
-            
-            # Send update to server
-            self.send_update()
-            
-            # Determine sleep interval based on attack simulation
-            sleep_interval = self.get_sleep_interval()
-            
-            # Sleep with periodic checks for stop signal
-            start_time = time.time()
-            while (time.time() - start_time) < sleep_interval and self.running:
-                time.sleep(0.5)  # Check every 0.5 seconds if we should stop
+            try:
+                # Check if we should continue running
+                if self.failed_attempts >= self.max_failed_attempts:
+                    print(f"❌ [CLIENT] Too many failed attempts ({self.failed_attempts}), stopping...")
+                    self.running = False
+                    break
+                
+                # Send update to server
+                self.send_update()
+                
+                # Determine sleep interval based on attack simulation
+                sleep_interval = self.get_sleep_interval()
+                
+                # Sleep with periodic checks for stop signal
+                start_time = time.time()
+                while (time.time() - start_time) < sleep_interval and self.running:
+                    time.sleep(0.5)  # Check every 0.5 seconds if we should stop
+                    
+            except Exception as e:
+                print(f"❌ [CLIENT] Loop error: {e}")
+                time.sleep(2)
         
         print("🛑 [CLIENT] Update loop stopped")
     
@@ -128,23 +136,28 @@ class QuantumNetworkClient:
         if not self.attack_simulator:
             return self.update_interval
         
-        # Check for attack timing override
-        timing_override = self.attack_simulator.get_timing_override()
-        
-        if timing_override == 'dos_active':
-            # DoS attack thread handles timing, use shorter check interval
-            return 1.0
-        elif timing_override is not None:
-            # Use attack-specific timing
-            return timing_override
-        else:
-            # Normal timing
+        try:
+            # Check for attack timing override
+            timing_override = self.attack_simulator.get_timing_override()
+            
+            if timing_override == 'dos_active':
+                # DoS attack thread handles timing, use shorter check interval
+                return 1.0
+            elif timing_override is not None:
+                # Use attack-specific timing
+                return timing_override
+            else:
+                # Normal timing
+                return self.update_interval
+                
+        except Exception as e:
+            print(f"❌ [CLIENT] Timing error: {e}")
             return self.update_interval
     
     def test_connection(self):
         """Test connection to server"""
         try:
-            response = requests.get(f"{self.server_url}/status", timeout=5)
+            response = requests.get(f"{self.server_url}/", timeout=5)
             if response.status_code == 200:
                 print("✅ [CLIENT] Server connection test successful")
                 return True
@@ -167,59 +180,3 @@ class QuantumNetworkClient:
         """Reset failed attempts counter"""
         self.failed_attempts = 0
         print("🔄 [CLIENT] Failed attempts counter reset")
-
-
-# Standalone testing function
-def test_quantum_client():
-    """Test the quantum client standalone"""
-    print("🧪 Testing Quantum Network Client...")
-    
-    # Create a mock attack simulator for testing
-    class MockAttackSimulator:
-        def __init__(self):
-            self.attack_active = False
-            self.attack_type = None
-        
-        def get_timing_override(self):
-            return None
-        
-        def stop_attack(self):
-            self.attack_active = False
-    
-    # Create client with mock simulator
-    mock_simulator = MockAttackSimulator()
-    client = QuantumNetworkClient(mock_simulator)
-    
-    # Test connection
-    print("\n1. Testing server connection...")
-    if client.test_connection():
-        print("✅ Server is reachable")
-    else:
-        print("❌ Server is not reachable - make sure server is running")
-        return
-    
-    # Test single update
-    print("\n2. Testing single update...")
-    success = client.send_update()
-    if success:
-        print("✅ Single update successful")
-    else:
-        print("❌ Single update failed")
-    
-    # Test client status
-    print("\n3. Testing client status...")
-    status = client.get_status()
-    print(f"Status: {status}")
-    
-    # Test start/stop
-    print("\n4. Testing start/stop functionality...")
-    client.start()
-    time.sleep(3)  # Let it run for a few seconds
-    client.stop()
-    
-    print("✅ Client test completed")
-
-
-if __name__ == '__main__':
-    # Run standalone test
-    test_quantum_client()
